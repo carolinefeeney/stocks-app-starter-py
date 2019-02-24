@@ -28,9 +28,15 @@ parsed_response = json.loads(response.text)  #> use this to parse from a string 
     #> In Pdb, now that it's a dict we can access its keys by doing: parsed_response["Meta Data"]
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"] # this is a nested dictionary
 
-latest_close = parsed_response["Time Series (Daily)"]["2019-02-20"]["4. close"]
-
 #breakpoint()
+
+tsd = parsed_response["Time Series (Daily)"] #just to be more shorthand
+
+dates = list(tsd.keys()) #TODO assumes first day is on top but should sort to ensure latest day is first
+latest_day = dates[0] #"2019-02-20"
+latest_close = tsd[latest_day]["4. close"]
+
+
 
 
 
