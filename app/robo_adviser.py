@@ -22,13 +22,8 @@ parsed_response = json.loads(response.text)  #> use this to parse from a string 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"] # this is a nested dictionary
 print(last_refreshed)
 
+# breakpoint()
 
-breakpoint()
-
-
-
-
-quit()
 
 #
 # INFO OUTPUTS
@@ -52,18 +47,18 @@ latest_price_usd = "$100,000.00" # TODO: traverse the nested response data struc
 print("-------------------------")
 print("SELECTED SYMBOL: MSFT")
 print("-------------------------")
-print("REQUESTING STOCK MARKET DATA")
+print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: 2018-02-20 02:00pm")
 print("-------------------------")
-print(f"LATEST DAY: {last_refreshed}")
-print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
-print(f"RECENT HIGH: {to_usd(float(recent_high))}")
-print(f"RECENT LOW: {to_usd(float(recent_low))}")
+print(f"LATEST DAY: {last_refreshed}") # string interpolation using formatting string
+print(f"LATEST CLOSE: ")
+print(f"RECENT HIGH: ")
+print(f"RECENT LOW: ")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
+print("RECOMMENDATION: BUY!") 
 print("BECAUSE: TODO")
 print("-------------------------")
-print(f"WRITING DATA TO CSV: {csv_file_path}")
+print(f"WRITING DATA TO CSV: ")
 print("-------------------------")
 print("HAPPY INVESTING!")
 
