@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import csv 
 import json #included in python language so don't need to install
 import os
 import requests
@@ -41,36 +42,48 @@ latest_close = tsd[latest_day]["4. close"]
 #recent_high = max(high_prices) # can use the maximum function on a list
 
 high_prices = []
+low_prices = []
 
 for date in dates:
     high_price = tsd[date]["2. high"]
     high_prices.append(float(high_price))
+    low_price = tsd[date]["3. low"]
+    low_prices.append(float(low_price))
 
-recent_high = max(high_prices) 
+recent_high = max(high_prices)
+recent_low = min(low_prices) 
 
 #
 # INFO OUTPUTS
 #
 
+# csv_file_path = "data/prices.csv" # a relative filepath
 
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "prices.csv")
 
+with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+    writer = csv.DictWriter(csv_file, fieldnames=["city", "name"])
+    writer.writeheader() # uses fieldnames set above
+    writer.writerow({"city": "New York", "name": "Yankees"})
+    writer.writerow({"city": "New York", "name": "Mets"})
+    writer.writerow({"city": "Boston", "name": "Red Sox"})
+    writer.writerow({"city": "New Haven", "name": "Ravens"})
 
 # from https://github.com/s2t2/robo-advisor-screencast/blob/master/app/robo_advisor.py
 print("-------------------------")
 print("SELECTED SYMBOL: MSFT")
 print("-------------------------")
-print("REQUESTING STOCK MARKET DATA...")
+print("REQUESTING STOCK MARKET DATA")
 print("REQUEST AT: 2018-02-20 02:00pm") #TODO use date time module
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}") # string interpolation using formatting string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") # need to convert to float in order to use usd function
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
-print(f"RECENT LOW: ")
+print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!") 
-print("BECAUSE: TODO")
+print("RECOMMENDATION: BUY!")  #TODO !!! use these values as part of the algorithm
+print("BECAUSE: TODO")         #TODO !!!
 print("-------------------------")
-print(f"WRITING DATA TO CSV: ")
+print(f"WRITING DATA TO CSV: {csv_file_path}...")
 print("-------------------------")
 print("HAPPY INVESTING!")
-
