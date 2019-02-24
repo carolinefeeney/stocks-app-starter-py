@@ -5,6 +5,13 @@ import requests
 from IPython import embed
 
 load_dotenv() # loads environment variables set in a ".env" file, including the value of the ALPHAVANTAGE_API_KEY variable
+# see: https://www.alphavantage.co/support/#api-key
+api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'."
+
+# utility function to convert float or integer to usd-formatted string (for printing)
+# ... adapted from: https://github.com/s2t2/shopping-cart-screencast/blob/30c2a2873a796b8766e9b9ae57a2764725ccc793/shopping_cart.py#L56-L59
+def to_usd(my_price):
+    return "${0:,.2f}".format(my_price) #> $12,000.71
 
 #
 # INFO INPUTS
@@ -20,38 +27,29 @@ response = requests.get(request_url)
 parsed_response = json.loads(response.text)  #> use this to parse from a string into a dictionary
     #> In Pdb, now that it's a dict we can access its keys by doing: parsed_response["Meta Data"]
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"] # this is a nested dictionary
-print(last_refreshed)
 
-# breakpoint()
+latest_close = parsed_response["Time Series (Daily)"]["2019-02-20"]["4. close"]
+
+#breakpoint()
+
 
 
 #
 # INFO OUTPUTS
 #
 
-# see: https://www.alphavantage.co/support/#api-key
-api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'."
 
-symbol = "NFLX" #TODO: capture user input
 
-# see: https://www.alphavantage.co/documentation/#daily
-# TODO: assemble the request url to get daily data for the given stock symbol
-
-# TODO: issue a "GET" request to the specified url, and store the response in a variable
-
-# TODO: parse the JSON response
-
-latest_price_usd = "$100,000.00" # TODO: traverse the nested response data structure to find the latest closing price
 
 # from https://github.com/s2t2/robo-advisor-screencast/blob/master/app/robo_advisor.py
 print("-------------------------")
 print("SELECTED SYMBOL: MSFT")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-print("REQUEST AT: 2018-02-20 02:00pm")
+print("REQUEST AT: 2018-02-20 02:00pm") #TODO use date time module
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}") # string interpolation using formatting string
-print(f"LATEST CLOSE: ")
+print(f"LATEST CLOSE: {to_usd(float(latest_close))}") # need to convert to float in order to use usd function
 print(f"RECENT HIGH: ")
 print(f"RECENT LOW: ")
 print("-------------------------")
