@@ -36,9 +36,17 @@ dates = list(tsd.keys()) #TODO assumes first day is on top but should sort to en
 latest_day = dates[0] #"2019-02-20"
 latest_close = tsd[latest_day]["4. close"]
 
+# need max of all of the high prices of each day
+# high_prices = [10, 20, 30, 5]
+#recent_high = max(high_prices) # can use the maximum function on a list
 
+high_prices = []
 
+for date in dates:
+    high_price = tsd[date]["2. high"]
+    high_prices.append(float(high_price))
 
+recent_high = max(high_prices) 
 
 #
 # INFO OUTPUTS
@@ -56,7 +64,7 @@ print("REQUEST AT: 2018-02-20 02:00pm") #TODO use date time module
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}") # string interpolation using formatting string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") # need to convert to float in order to use usd function
-print(f"RECENT HIGH: ")
+print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: ")
 print("-------------------------")
 print("RECOMMENDATION: BUY!") 
