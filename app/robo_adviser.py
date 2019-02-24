@@ -7,7 +7,6 @@ from IPython import embed
 
 load_dotenv() # loads environment variables set in a ".env" file, including the value of the ALPHAVANTAGE_API_KEY variable
 # see: https://www.alphavantage.co/support/#api-key
-api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'."
 
 # utility function to convert float or integer to usd-formatted string (for printing)
 # ... adapted from: https://github.com/s2t2/shopping-cart-screencast/blob/30c2a2873a796b8766e9b9ae57a2764725ccc793/shopping_cart.py#L56-L59
@@ -18,7 +17,9 @@ def to_usd(my_price):
 # INFO INPUTS
 #
 
-request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo"
+symbol = "MSFT" #TODO accept user input
+api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'." #> not "demo"
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
 response = requests.get(request_url)
 # print(type(response)) #> class 'requests.models.reponse'
@@ -72,7 +73,7 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
         writer.writerow({
             "timestamp": date,
             "open": daily_prices["1. open"],
-            "high": daily_prices["2. high"] ,
+            "high": daily_prices["2. high"],
             "low": daily_prices["3. low"],
             "close": daily_prices["4. close"],
             "volume": daily_prices["5. volume"]
