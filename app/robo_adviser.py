@@ -17,7 +17,9 @@ def to_usd(my_price):
 # INFO INPUTS
 #
 
-symbol = "MSFT" #TODO accept user input
+
+user_input = input("PLEASE CHOOSE A STOCK NAME TO ANALYZE: ")
+symbol = user_input #> "MSFT"
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'." #> not "demo"
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
