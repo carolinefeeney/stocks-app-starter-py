@@ -18,6 +18,10 @@ response = requests.get(request_url)
 # print (response.text) #> this text is a string so we need to use JSON to process into a dictionary
 
 parsed_response = json.loads(response.text)  #> use this to parse from a string into a dictionary
+    #> In Pdb, now that it's a dict we can access its keys by doing: parsed_response["Meta Data"]
+last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"] # this is a nested dictionary
+print(last_refreshed)
+
 
 breakpoint()
 
@@ -29,8 +33,6 @@ quit()
 #
 # INFO OUTPUTS
 #
-
-
 
 # see: https://www.alphavantage.co/support/#api-key
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'."
@@ -46,4 +48,22 @@ symbol = "NFLX" #TODO: capture user input
 
 latest_price_usd = "$100,000.00" # TODO: traverse the nested response data structure to find the latest closing price
 
-print(f"LATEST DAILY CLOSING PRICE FOR {symbol} IS: {latest_price_usd}")
+# from https://github.com/s2t2/robo-advisor-screencast/blob/master/app/robo_advisor.py
+print("-------------------------")
+print("SELECTED SYMBOL: MSFT")
+print("-------------------------")
+print("REQUESTING STOCK MARKET DATA")
+print("REQUEST AT: 2018-02-20 02:00pm")
+print("-------------------------")
+print(f"LATEST DAY: {last_refreshed}")
+print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
+print(f"RECENT HIGH: {to_usd(float(recent_high))}")
+print(f"RECENT LOW: {to_usd(float(recent_low))}")
+print("-------------------------")
+print("RECOMMENDATION: BUY!")
+print("BECAUSE: TODO")
+print("-------------------------")
+print(f"WRITING DATA TO CSV: {csv_file_path}")
+print("-------------------------")
+print("HAPPY INVESTING!")
+
