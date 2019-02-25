@@ -18,10 +18,23 @@ def to_usd(my_price):
 # INFO INPUTS
 #
 
-
-user_input = input("PLEASE CHOOSE A STOCK NAME TO ANALYZE: ") #TODO add message if type name wrong
-symbol = user_input #> "MSFT"
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'." #> not "demo"
+
+# adapted from https://github.com/hiepnguyen034/robo-stock/blob/master/robo_advisor.py
+while True:
+	user_input = input("PLEASE CHOOSE A STOCK NAME TO ANALYZE: ") 
+	if not user_input.isalpha():
+		print("Please be sure to enter the name of a stock.")
+	else:
+		data=requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+user_input+'&apikey='+api_key)
+
+		if 'Error' in data.text:
+			print("Oops! Stock name not found. Please double check your stock name and try again.")
+		else:
+			break
+
+
+symbol = user_input #> "MSFT"
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
 response = requests.get(request_url)
@@ -90,7 +103,7 @@ print("-------------------------")
 print("SELECTED SYMBOL: " + user_input)
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA")
-print("REQUEST AT: " + (str(now))) #TODO use date time module
+print("REQUEST AT: " + (str(now)))
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}") # string interpolation using formatting string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") # need to convert to float in order to use usd function
