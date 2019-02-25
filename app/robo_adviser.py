@@ -101,10 +101,6 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
         })
 
 
-
-
-
-
 # from https://github.com/carolinefeeney/shopping-cart-project/blob/master/shopping_cart.py
 now = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S"),"%Y-%m-%d %H:%M:%S")
 
@@ -122,10 +118,12 @@ print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
 
 # adapted from https://github.com/hiepnguyen034/robo-stock/blob/master/robo_advisor.py and https://stackoverflow.com/questions/9039961/finding-the-average-of-a-list
-if float(latest_close)> float(average_of_highs):
-	print ("RECOMMENDATION: BUY! The stock's current closing price is higher than the closing average price in the available data period.")
-else:
-	print ("RECOMMENDATION: DO NOT BUY! The stock's current closing price is lower than the closing average price in the available data period.")
+if float(latest_close)< float(average_of_highs):
+	print ("RECOMMENDATION: BUY! (Logic of Warren Buffett: Buy low, sell high). The stock's current closing price is lower than the average closing price in the available data period.")
+elif float(latest_close)> float(average_of_highs):
+    print("RECOMMENDATION: SELL! (Logic of Warren Buffett: Buy low, sell high. The stock's current closing price is higher than the average closing price in the available data period.")
+else: 
+	print ("RECOMMENDATION: DO NOT BUY! The stock's current closing price is the average of previous closing prices.")
 
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {csv_file_path}...")
