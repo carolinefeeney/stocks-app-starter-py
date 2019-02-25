@@ -4,6 +4,7 @@ import json #included in python language so don't need to install
 import os
 import requests
 from IPython import embed
+import datetime
 
 load_dotenv() # loads environment variables set in a ".env" file, including the value of the ALPHAVANTAGE_API_KEY variable
 # see: https://www.alphavantage.co/support/#api-key
@@ -18,7 +19,7 @@ def to_usd(my_price):
 #
 
 
-user_input = input("PLEASE CHOOSE A STOCK NAME TO ANALYZE: ")
+user_input = input("PLEASE CHOOSE A STOCK NAME TO ANALYZE: ") #TODO add message if type name wrong
 symbol = user_input #> "MSFT"
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY") or "OOPS. Please set an environment variable named 'ALPHAVANTAGE_API_KEY'." #> not "demo"
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
@@ -81,12 +82,15 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "volume": daily_prices["5. volume"]
         })
 
+# from https://github.com/carolinefeeney/shopping-cart-project/blob/master/shopping_cart.py
+now = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S"),"%Y-%m-%d %H:%M:%S")
+
 # from https://github.com/s2t2/robo-advisor-screencast/blob/master/app/robo_advisor.py
 print("-------------------------")
-print("SELECTED SYMBOL: MSFT")
+print("SELECTED SYMBOL: " + user_input)
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA")
-print("REQUEST AT: 2018-02-20 02:00pm") #TODO use date time module
+print("REQUEST AT: " + (str(now))) #TODO use date time module
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}") # string interpolation using formatting string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") # need to convert to float in order to use usd function
