@@ -5,6 +5,8 @@ import os
 import requests
 from IPython import embed
 import datetime
+import numpy as np
+
 
 load_dotenv() # loads environment variables set in a ".env" file, including the value of the ALPHAVANTAGE_API_KEY variable
 # see: https://www.alphavantage.co/support/#api-key
@@ -68,7 +70,10 @@ for date in dates:
     low_prices.append(float(low_price))
 
 recent_high = max(high_prices)
+average_of_highs = np.mean(high_prices)
 recent_low = min(low_prices) 
+average_of_lows = np.mean(low_prices)
+
 
 #
 # INFO OUTPUTS
@@ -95,6 +100,11 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "volume": daily_prices["5. volume"]
         })
 
+
+
+
+
+
 # from https://github.com/carolinefeeney/shopping-cart-project/blob/master/shopping_cart.py
 now = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S"),"%Y-%m-%d %H:%M:%S")
 
@@ -110,8 +120,13 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}") # need to convert to float
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")  #TODO !!! use these values as part of the algorithm
-print("BECAUSE: TODO")         #TODO !!!
+
+# adapted from https://github.com/hiepnguyen034/robo-stock/blob/master/robo_advisor.py and https://stackoverflow.com/questions/9039961/finding-the-average-of-a-list
+if float(latest_close)> float(average_of_highs):
+	print ("RECOMMENDATION: BUY! The stock's current closing price is higher than the closing average price in the available data period.")
+else:
+	print ("RECOMMENDATION: DO NOT BUY! The stock's current closing price is lower than the closing average price in the available data period.")
+
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {csv_file_path}...")
 print("-------------------------")
